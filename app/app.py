@@ -13,7 +13,7 @@ def home():
 @app.route('/init')
 def init():
     try:
-       db = MySQLdb.connect("localhost", "root", "root")
+       db = MySQLdb.connect("db", "root", "root")
        cursor = db.cursor()
        cursor.execute("DROP DATABASE IF EXISTS QUOTES")
        cursor.execute("CREATE DATABASE QUOTES")
@@ -29,7 +29,7 @@ def init():
 @app.route("/quotes/add", methods=['POST'])
 def add():
     try:
-       db = MySQLdb.connect("localhost","root","root")
+       db = MySQLdb.connect("db","root","root")
        cursor = db.cursor()
        cursor.execute("USE QUOTES")
        req_json = request.get_json()
@@ -44,13 +44,13 @@ def add():
 @app.route("/quotes/<Uid>")
 def getquotes():
     try:
-        db = MySQLdb.connect("localhost","root","root")
+        db = MySQLdb.connect("db","root","root")
         cursor = db.cursor()
         cursor.execute("USE QUOTES")
         cursor.execute("select Author, BookTitle, Quote from courses where ID=" + str(uid))
         data = cursor.fetchall()
         if data:
-            return   data + "\n\nSuccess\n\n"
+            return json.dumps(data)
         else:
             return "\n\nRecord not found\n\n"
 
@@ -60,7 +60,7 @@ def getquotes():
 @app.route("/quotes/getall")
 def getquotesall():
     try:
-        db = MySQLdb.connect("localhost","root","root")
+        db = MySQLdb.connect("db","root","root")
         cursor = db.cursor()
         cursor.execute("USE QUOTES")
         cursor.execute("select * from quotes")
@@ -75,5 +75,5 @@ def getquotesall():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0',debug=True)
     # r = requests.post('', data = {'key':'value'})
