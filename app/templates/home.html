@@ -10,7 +10,11 @@
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
 
 
+
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="../static/index.js"></script>
+
 
 <body>
 
@@ -35,28 +39,29 @@
             <h1> INSERT A ROW </h1>
 
         <form>
-            Id
-            <input type="Id" name="Id"/>
-            </br>
+            <!-- Id
+            <input type="Text" id="Id" name="Id"/>
+            </br> -->
 
             Author
-            <input type="Author" name="Author"/>
+            <input type="Text" id="Author" name="Author"/>
             </br>
-
 
             Booktitle
-            <input type="Booktitle" name="booktitle"/>
+            <input type="Text" id="BookTitle" name="BookTitle"/>
             </br>
 
-            Quote!
-            <input type="Quote" name="quote"/>
+            Quote
+            <input type="Text" id="Quote" name="Quote"/>
             </br>
 
-
-            <input type="submit" value="Add row!" name="addrow"/>
+            <input type="Button" id="Button1" value="Add row!" name="addrow" onclick=addQuotes() />
 
 
         </form>
+
+          <div id="result"> E GAMW TO XRISTO SOU</div>
+
             <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Sign up today</a>
             </p>
         </div>
