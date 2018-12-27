@@ -57,13 +57,13 @@ def add():
 #     except (MySQLdb.Error, MySQLdb.Warning) as e:
 #         return "MySQL Error: %s" % str(e)
 
-@app.route("/quotes/getall")
+@app.route("/quotes/getall", methods=['POST'])
 def getquotesall():
     try:
         db = MySQLdb.connect("db","root","root")
         cursor = db.cursor()
         cursor.execute("USE QUOTES")
-        cursor.execute("select * from quotes")
+        cursor.execute("select * from quotes WHERE BookTitle=%s", [request.form['QuoteSearch']]);
         data = cursor.fetchall()
         if data:
             return json.dumps(data)
