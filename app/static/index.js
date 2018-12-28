@@ -14,7 +14,7 @@ function addQuotes()
          },
          complete: function(data,status) {
             //optional, used for debugging purposes
-             alert(status);
+             // alert(status);
          }
  });
 }
@@ -35,7 +35,7 @@ function returnQuotesbyBook()
          },
          complete: function(data,status) {
             //optional, used for debugging purposes
-             alert(status);
+             // alert(status);
          }
  });
 }

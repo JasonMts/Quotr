@@ -2,9 +2,17 @@ from flask import Flask, render_template, json
 import MySQLdb
 from flask import Response
 from flask import request
+# from redis import Redis
+import hashlib
+import os
+import redis
+import sys
+
 
 
 app = Flask(__name__)
+R_SERVER = redis.Redis(host=os.environ.get('REDIS_HOST', 'redis'), port=6379)
+
 
 @app.route("/")
 def home():
@@ -29,14 +37,14 @@ def init():
 @app.route("/quotes/add", methods=['POST'])
 def add():
     try:
-       db = MySQLdb.connect("db","root","root")
-       cursor = db.cursor()
-       cursor.execute("USE QUOTES")
-       # req_json = request.get_json()
-       cursor.execute("INSERT INTO quotes (Author, BookTitle, Quote) VALUES (%s,%s,%s)",
+        db = MySQLdb.connect("db","root","root")
+        cursor = db.cursor()
+        cursor.execute("USE QUOTES")
+        # req_json = request.get_json()
+        cursor.execute("INSERT INTO quotes (Author, BookTitle, Quote) VALUES (%s,%s,%s)",
              (request.form['Author'], request.form['BookTitle'], request.form['Quote']))
-       db.commit()
-       return Response("Added\n\n", status=200, mimetype='application/json')
+        db.commit()
+        return Response("Added\n\n", status=200, mimetype='application/json')
 
     except (MySQLdb.Error, MySQLdb.Warning) as e:
        return "MySQL Error: %s" % str(e)
@@ -60,15 +68,28 @@ def add():
 @app.route("/quotes/getall", methods=['POST'])
 def getquotesall():
     try:
-        db = MySQLdb.connect("db","root","root")
-        cursor = db.cursor()
-        cursor.execute("USE QUOTES")
-        cursor.execute("select * from quotes WHERE BookTitle=%s", [request.form['QuoteSearch']]);
-        data = cursor.fetchall()
-        if data:
-            return json.dumps(data)
+        uid = request.form['QuoteSearch']
+        hash1 = str(uid).encode('utf-8')
+        hash = hashlib.sha256(hash1).hexdigest()
+        key = "sql_cache:" + hash
+
+        returnval = ""
+
+        if (R_SERVER.get(key)):
+            return json.dumps("\n\nFrom Cache\n" + R_SERVER.get(key).decode('utf-8'))
         else:
-            return "\n\nRecord not found\n\n"
+            db = MySQLdb.connect("db","root","root")
+            cursor = db.cursor()
+            cursor.execute("USE QUOTES")
+            cursor.execute("select * from quotes WHERE BookTitle=%s", [request.form['QuoteSearch']]);
+            data = cursor.fetchall()
+            if data:
+                # return json.dumps(data)
+                R_SERVER.set(key, str(data))
+                R_SERVER.expire(key, 500)
+                return json.dumps(R_SERVER.get(key).decode('utf-8'))
+            else:
+                return "\n\nRecord not found\n\n"
 
     except (MySQLdb.Error, MySQLdb.Warning) as e:
         return "MySQL Error: %s" % str(e)
