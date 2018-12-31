@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quoteapp
+spec:
+  replicas: 2             # start with 2 copies of the app
+  selector:
+    matchLabels:
+      app: quoteapp    # different label compared to mysql
+
+  template:
+    metadata:
+      labels:
+        app: quoteapp
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        ports:
+          - containerPort: 6379
+            name: redis
+            protocol: TCP
+
+
+      - name: todoapp-app
+        image: jasonmts/cloudapp
+        env:
+          - name: "REDIS_HOST"
+            value: "localhost"
+        ports:
+          - containerPort: 5000
+            name: http
+            protocol: TCP
