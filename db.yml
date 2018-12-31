@@ -1,23 +1,26 @@
 apiVersion: "apps/v1"
 kind: Deployment
 metadata:
-  name: mysql
+  name: db
 spec:
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
-      app: mysql-app             # matches the label used in the template
+      app: db-app            # matches the label used in the template
 
   template:
     metadata:
       labels:
-        app: mysql-app           # no convention for these - but they must match
+        app: db-app         # no convention for these - but they must match
     spec:
       containers:
-        - name: mysql
+        - name: db
           image: mysql:5.7
           ports:
-            - containerPort: 3306
-              protocol: TCP
+          - name: db
+            containerPort: 3306
+            protocol: TCP
           env:
             - name:  MYSQL_DATABASE        # database to create automatically
               value: QUOTES

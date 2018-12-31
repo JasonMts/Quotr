@@ -4,7 +4,7 @@ metadata:
   name: quoteapp-svc
   labels:
     name: quoteapp
-    app: demo
+    app: quoteapp
 spec:
   type: NodePort
   ports:
@@ -12,5 +12,6 @@ spec:
     name: http
     targetPort: 5000
     protocol: TCP
+  type: LoadBalancer
   selector:
     app: quoteapp
