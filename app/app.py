@@ -41,13 +41,38 @@ def add():
         cursor = db.cursor()
         cursor.execute("USE QUOTES")
         # req_json = request.get_json()
-        cursor.execute("INSERT INTO quotes (Author, BookTitle, Quote) VALUES (%s,%s,%s)",
-             (request.form['Author'], request.form['BookTitle'], request.form['Quote']))
+
+        #this is needed because ajax sends differently than curl
+        if request.form:
+            cursor.execute("INSERT INTO quotes (Author, BookTitle, Quote) VALUES (%s,%s,%s)",
+                 (request.form['Author'], request.form['BookTitle'], request.form['Quote']))
+        else:
+            data = request.get_json(force=True)
+            cursor.execute("INSERT INTO quotes (Author, BookTitle, Quote) VALUES (%s,%s,%s)",
+                 (data['Author'], data['BookTitle'], data['Quote']))
+
         db.commit()
         return Response("Added\n\n", status=200, mimetype='application/json')
 
     except (MySQLdb.Error, MySQLdb.Warning) as e:
        return "MySQL Error: %s" % str(e)
+
+
+# @app.route("/quotes/add", methods=['POST'])
+# def add():
+#     try:
+#         db = MySQLdb.connect("db","root","root")
+#         cursor = db.cursor()
+#         cursor.execute("USE QUOTES")
+#         # req_json = request.get_json()
+#         data = request.get_json(force=True)
+#         cursor.execute("INSERT INTO quotes (Author, BookTitle, Quote) VALUES (%s,%s,%s)",
+#              (data['Author'], data['BookTitle'], data['Quote']))
+#         db.commit()
+#         return Response("Added\n\n", status=200, mimetype='application/json')
+#
+#     except (MySQLdb.Error, MySQLdb.Warning) as e:
+#        return "MySQL Error: %s" % str(e)
 
 # @app.route("/quotes/<Uid>")
 # def getquotes():
@@ -68,7 +93,12 @@ def add():
 @app.route("/quotes/getall", methods=['POST'])
 def getquotesall():
     try:
-        uid = request.form['QuoteSearch']
+        if request.form:
+            uid = request.form['QuoteSearch']
+        else:
+            data = request.get_json(force=True)
+            uid = data['QuoteSearch']
+
         hash1 = str(uid).encode('utf-8')
         hash = hashlib.sha256(hash1).hexdigest()
         key = "sql_cache:" + hash
@@ -81,7 +111,7 @@ def getquotesall():
             db = MySQLdb.connect("db","root","root")
             cursor = db.cursor()
             cursor.execute("USE QUOTES")
-            cursor.execute("select * from quotes WHERE BookTitle=%s", [request.form['QuoteSearch']]);
+            cursor.execute("select * from quotes WHERE BookTitle=%s", [uid]);
             data = cursor.fetchall()
             if data:
                 # return json.dumps(data)
