@@ -23,7 +23,7 @@ spec:
 
 
       - name: todoapp-app
-        image: jasonmts/cloudapp
+        image: jasonmts/clapp
         env:
           - name: "REDIS_HOST"
             value: "localhost"
