@@ -74,21 +74,6 @@ def add():
 #     except (MySQLdb.Error, MySQLdb.Warning) as e:
 #        return "MySQL Error: %s" % str(e)
 
-# @app.route("/quotes/<Uid>")
-# def getquotes():
-#     try:
-#         db = MySQLdb.connect("db","root","root")
-#         cursor = db.cursor()
-#         cursor.execute("USE QUOTES")
-#         cursor.execute("select Author, BookTitle, Quote from courses where ID=" + str(uid))
-#         data = cursor.fetchall()
-#         if data:
-#             return json.dumps(data)
-#         else:
-#             return "\n\nRecord not found\n\n"
-#
-#     except (MySQLdb.Error, MySQLdb.Warning) as e:
-#         return "MySQL Error: %s" % str(e)
 
 @app.route("/quotes/getall", methods=['POST'])
 def getquotesall():
@@ -111,7 +96,7 @@ def getquotesall():
             db = MySQLdb.connect("db","root","root")
             cursor = db.cursor()
             cursor.execute("USE QUOTES")
-            cursor.execute("select * from quotes WHERE BookTitle=%s", [uid]);
+            cursor.execute("select Quote from quotes WHERE Author=%s", [uid]);
             data = cursor.fetchall()
             if data:
                 # return json.dumps(data)

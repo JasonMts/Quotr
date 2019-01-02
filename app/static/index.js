@@ -54,7 +54,7 @@ function addQuotes()
        success: function(data,status)
        {
            // alert(data);
-           $("#result").append(data);
+           $("#result").html("Quote Added!!");
          },
          complete: function(data,status) {
             //optional, used for debugging purposes

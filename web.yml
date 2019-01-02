@@ -16,6 +16,9 @@ spec:
       containers:
       - name: redis
         image: redis
+        resources:
+          requests:
+            cpu: 200m
         ports:
           - containerPort: 6379
             name: redis
@@ -24,6 +27,10 @@ spec:
 
       - name: todoapp-app
         image: jasonmts/clapp
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 200m
         env:
           - name: "REDIS_HOST"
             value: "localhost"
