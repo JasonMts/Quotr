@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Python Flask Bucket List App</title>
+    <title>Quotr</title>
 
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
@@ -59,18 +59,18 @@
 
             </br>
 
-            Search for Quotes by typing an author's name!!!
+            Search for Quotes by typing an author's name!!! (Working examples to try: Socrates, Aristotle)
             </br>
             <input type="Text" id="QuoteSearch" name="QuoteSearch"/>
 
             </br>
-            <input class="btn btn-lg btn-success" type="Button" id="Button2" value="Show similar!" name="showsimilar" onclick=returnQuotesbyBook() />
+            <input class="btn btn-lg btn-success" type="Button" id="Button2" value="Show Quotes!" name="showsimilar" onclick=returnQuotesbyBook() />
 
 
         </form>
 
           </br>
-          <div id="result"> QUOTES WILL APPEAR HERE! </div>
+          <div class="row marketing" id="result"> QUOTES WILL APPEAR HERE! </div>
 
             <!-- <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Sign up today</a>
             </p> -->
@@ -78,14 +78,12 @@
 
         <div class="row marketing">
             <div class="col-lg-6" id="printquotes">
-                <!-- <h4>Bucket List</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+                <h4>Application</h4>
+                <p>This app was created to host interesting quotes from authors that users enjoy. Current emphasis
+                was given on having a working website and show the improvement of Redis caching a MySQL database
+              but in the future it will be able to include a ranking system as well as user logins. </p>
 
-                <h4>Bucket List</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-                <h4>Bucket List</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p> -->
+                </p>
             </div>
 
             <div class="col-lg-6">
@@ -101,7 +99,7 @@
         </div>
 
         <footer class="footer">
-            <p>&copy; Iason Myttas 2018</p>
+            <p>&copy;  Iason Myttas, COMSM0010, 2018 </p>
         </footer>
 
     </div>
