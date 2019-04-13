@@ -5,5 +5,5 @@ This app was created to host interesting quotes from authors that users enjoy. C
 
 ## Hosting Info
 
-The app was hosted using the Oracle Cloud and Kubernetes.
+The app was hosted using the Oracle Cloud and Kubernetes. It can be found at http://129.213.140.20/
 
